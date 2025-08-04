@@ -1,29 +1,36 @@
 import express from "express";
-import { AuthController } from "../controllers/authController";
-import { AuthMiddleware } from "../middleware/auth";
-import { ValidationMiddleware } from "../middleware/validation";
+import { 
+  registerUser, 
+  loginUser, 
+  refreshUserToken, 
+  logoutUser, 
+  getUserProfile 
+} from "../controllers/authController.js";
+import { authenticate } from "../middleware/auth.js";
+import { validateRegistration, validateLogin } from "../middleware/validation.js";
 
-export const router = express.Router();
+const router = express.Router();
 
 router.post('/register', 
-  ValidationMiddleware.validateRegistration(),
-  AuthController.register
+  validateRegistration(),
+  registerUser
 );
 
 router.post('/login', 
-  ValidationMiddleware.validateLogin(),
-  AuthController.login
+  validateLogin(),
+  loginUser
 );
 
-router.post('/refresh-token', AuthController.refreshToken);
+router.post('/refresh-token', refreshUserToken);
 
 router.post('/logout', 
-  AuthMiddleware.authenticate,
-  AuthController.logout
+  authenticate,
+  logoutUser
 );
 
 router.get('/profile', 
-  AuthMiddleware.authenticate,
-  AuthController.getProfile
+  authenticate,
+  getUserProfile
 );
 
+export default router;

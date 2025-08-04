@@ -1,24 +1,30 @@
 import express from "express";
-import { AuthMiddleware } from "../middleware/auth";
-import { UserController } from "../controllers/userController";
-import { ROLES } from "../constants/roles";
+import { authenticate, authorize, authorizeHierarchy } from "../middleware/auth.js";
+import { 
+  getAllUsersController, 
+  updateUserRoleController, 
+  deactivateUserController 
+} from "../controllers/userController.js";
+import { ROLES } from "../constants/roles.js";
 
-export const router = express.Router();
+const router = express.Router();
 
 // All routes require authentication
-router.use(AuthMiddleware.authenticate);
+router.use(authenticate);
 
 router.get('/', 
-  AuthMiddleware.authorizeHierarchy(ROLES.ADMIN),
-  UserController.getAllUsers
+  authorizeHierarchy(ROLES.ADMIN),
+  getAllUsersController
 );
 
 router.put('/:userId/role', 
-  AuthMiddleware.authorize(ROLES.SUPERADMIN),
-  UserController.updateUserRole
+  authorize(ROLES.SUPERADMIN),
+  updateUserRoleController
 );
 
 router.put('/:userId/deactivate', 
-  AuthMiddleware.authorizeHierarchy(ROLES.ADMIN),
-  UserController.deactivateUser
+  authorizeHierarchy(ROLES.ADMIN),
+  deactivateUserController
 );
+
+export default router;

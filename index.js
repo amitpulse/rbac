@@ -5,12 +5,12 @@ import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
-import connectDB from './config/database.js';
+import { connectDB } from './config/database.js';
 import { errorHandler } from './utils/errors.js';
 
 // Routes
-import authRoutes from './routes/auth.js';
-import userRoutes from './routes/users.js';
+import authRoutes from './routes/auth.route.js';
+import userRoutes from './routes/users.route.js'
 
 // Configure dotenv
 dotenv.config();
@@ -30,7 +30,7 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 50 // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 
@@ -52,7 +52,7 @@ app.get('/api/health', (req, res) => {
 app.use(errorHandler);
 
 // Handle undefined routes
-app.all('*', (req, res) => {
+app.all('/{*any}', (req, res) => {
   res.status(404).json({
     success: false,
     message: `Route ${req.originalUrl} not found`
@@ -64,4 +64,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;

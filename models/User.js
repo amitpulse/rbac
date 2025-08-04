@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import {ROLES} from '../constants/roles'
+import {ROLES} from '../constants/roles.js'
 
 
 const userSchema = new mongoose.Schema({
@@ -62,4 +62,4 @@ userSchema.methods.updateLastLogin = function() {
   return this.save();
 };
 
-module.exports = mongoose.model('User', userSchema);
+ export default mongoose.model('User', userSchema);

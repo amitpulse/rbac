@@ -1,31 +1,29 @@
-import { jwt} from "jsonwebtoken";
-import {JWT_CONFIG} from "../config/jwt"
+import jwt from "jsonwebtoken";
+import { JWT_CONFIG } from "../config/jwt.js";
 
-export class JWTUtil {
-  static generateAccessToken(userId, role) {
-    return jwt.sign(
-      { userId, role, type: 'access' },
-      JWT_CONFIG.JWT_SECRET,
-      { expiresIn: JWT_CONFIG.JWT_EXPIRES_IN }
-    );
-  }
+export const generateAccessToken = (userId, role) => {
+  return jwt.sign(
+    { userId, role, type: 'access' },
+    JWT_CONFIG.JWT_SECRET,
+    { expiresIn: JWT_CONFIG.JWT_EXPIRES_IN }
+  );
+};
 
-  static generateRefreshToken(userId) {
-    return jwt.sign(
-      { userId, type: 'refresh' },
-      JWT_CONFIG.JWT_SECRET,
-      { expiresIn: JWT_CONFIG.JWT_REFRESH_EXPIRES_IN}
-    );
-  }
+export const generateRefreshToken = (userId) => {
+  return jwt.sign(
+    { userId, type: 'refresh' },
+    JWT_CONFIG.JWT_SECRET,
+    { expiresIn: JWT_CONFIG.JWT_REFRESH_EXPIRES_IN }
+  );
+};
 
-  static verifyToken(token) {
-    return jwt.verify(token, JWT_CONFIG.JWT_SECRET);
-  }
+export const verifyToken = (token) => {
+  return jwt.verify(token, JWT_CONFIG.JWT_SECRET);
+};
 
-  static generateTokenPair(userId, role) {
-    return {
-      accessToken: this.generateAccessToken(userId, role),
-      refreshToken: this.generateRefreshToken(userId)
-    };
-  }
-}
+export const generateTokenPair = (userId, role) => {
+  return {
+    accessToken: generateAccessToken(userId, role),
+    refreshToken: generateRefreshToken(userId)
+  };
+};
