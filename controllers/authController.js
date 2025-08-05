@@ -3,9 +3,7 @@ import {
   register,
   login,
   refreshToken as refreshTokenService,
-  logout,
-  
-} from "../services/authService.js";
+  logout } from "../services/authService.js";
 
 export const registerUser = async (req, res, next) => {
   try {
