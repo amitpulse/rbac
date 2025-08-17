@@ -18,5 +18,3 @@ This application implements a Role Based Authentication System (RBAC) for web pr
 2. Install dependencies.
 3. Configure roles and permissions.
 4. Run the application.
-
-For detailed setup and usage instructions, see the documentation below.
